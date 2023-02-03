@@ -1,6 +1,7 @@
 import React from 'react';
 import StartFirebase from '../firebaseConfig/firebase';
-import { CustomMarker } from '../Marker';
+import CustomMarker from '../Marker';
+import MarkerInf from '../MarkerInf';
 import {ref,onValue} from 'firebase/database'
 const db = StartFirebase();
 export class Data extends React.Component {
@@ -29,7 +30,7 @@ export class Data extends React.Component {
             snapshot.forEach(childSnapshot=>{
                 let keyName=childSnapshot.key;
                 let data=childSnapshot.val();
-                if(this.getDistance([data.long_marker,data.lat],[this.state.items[0].lon,this.state.items[0].lat])<=this.state.radius && records.length<10000){
+                if(this.getDistance([data.long_marker,data.lat],[this.state.items[0].lon,this.state.items[0].lat])<=this.state.radius && records.length<5){
                     records.push({"key":keyName,"data":data})
                 }
             })
@@ -38,40 +39,6 @@ export class Data extends React.Component {
             });
         })
     }
-    // getData(){
-    //     const dbRef = ref(db,'/2/data');
-    //     onValue(dbRef,(snapshot)=>{
-    //         var records=[]
-    //         snapshot.forEach(childSnapshot=>{
-    //             let keyName=childSnapshot.key;
-    //             let data=childSnapshot.val();
-    //             if(this.getDistance([data.long_marker,data.lat],[this.state.items[0].lon,this.state.items[0].lat])<=this.state.radius && records.length<10000){
-    //                 records.push({"key":keyName,"data":data})
-    //             }
-    //         })
-    //         this.setState({
-    //             data: records
-    //         });
-    //     }) 
-    // }
-    // scheduleNextUpdate() {
-    //     this.timer = setTimeout(this.updateRenderedThings, 2000)
-    // }
-    // updateRenderedThings() {
-    //     const itemsRendered = this.state.itemsRendered
-    //     const updateState = {
-    //         renderedThings: this.state.renderedThings.concat(this.props.things[this.state.itemsRendered]),
-    //         itemsRendered: itemsRendered+1
-    //     }
-    //     this.setState(updateState)
-    //     if (updateState.itemsRendered<this.props.things.length){
-    //         this.scheduleNextUpdate()
-    //     }
-    // }
-
-    // componentWillUnmount() {
-    //     clearTimeout(this.timer)
-    // }
 
 
     getDistance(origin, destination) {
@@ -104,9 +71,6 @@ export class Data extends React.Component {
         }else{
             return (
                 <CustomMarker things={this.state.data}></CustomMarker>
-                // this.state.data.map((element, i) => {
-                //     return (<CustomMarker key={i} lan={element.data.lat} lon={element.data.long_marker} desc={element.data.searching_tags} date={element.data.date} wiki={element.data.wiki} name={element.data.marker_name} bc_ad={element.data.bc_ad} img_name={element.data.img_name}></CustomMarker>) 
-                //  })
               );
         }
     }

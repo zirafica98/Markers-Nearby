@@ -1,42 +1,75 @@
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
 }
 
-.description-name{
+.description-name {
   color: black;
   font-weight: bold;
   text-decoration: none;
 }
-.description-date{
+
+.description-date {
   color: black;
   font-weight: bold;
 }
-.loop{
+
+.loop {
   position: absolute;
   z-index: 10000000000;
   top: 12%;
   display: flex;
   left: 0.5%;
 }
-.buttonSearch{
-  background-image: url('../public/search.png');
+
+.buttonSearch {
+  background-image: url("../public/search.png");
   background-size: 20px;
   width: 20px;
   height: 20px;
   cursor: pointer;
   border: none;
 }
-.inputSearch{
+
+.inputSearch {
   height: 20px;
   margin-left: 5%;
 }
+
+.marker-inf {
+  position: absolute;
+  z-index: 10000000000;
+  display: block;
+  background: white;
+  width: 20%;
+  height: auto;
+  border: 2px solid black;
+  border-radius: 10px;
+  right: 1%;
+  top: 1%;
+  text-align: center;
+}
+.marker-inf > span {
+  text-align: center;
+  width: 100%;
+  font-weight: bold;
+  font-size: 14px;
+}
+.marker-inf > text {
+  width: 100%;
+  text-align: center;
+  display: block;
+}
+.marker-inf > p {
+  font-size: 12px;
+  padding: 2px;
+}
+.marker-inf > a {
+  font-size: 14px;
+}/*# sourceMappingURL=index.css.map */

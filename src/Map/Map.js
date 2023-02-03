@@ -8,7 +8,6 @@ import "leaflet/dist/leaflet.css";
 import "leaflet-geosearch/dist/geosearch.css";
 import { Data } from '../Data';
 import { ICONRED,theRadius } from '../Variable';
-// //51.505, -0.09
 
 export class MyMap extends React.Component {
   constructor(props){
@@ -47,7 +46,7 @@ export class MyMap extends React.Component {
     
       if (this.state.items.length>0){
         return (
-          <MapContainer center={[this.state.items[0].lat,this.state.items[0].lon]} zoom={13} style={{height: "100vh"}}>
+          <MapContainer center={[this.state.items[0].lat,this.state.items[0].lon]} zoom={14} style={{height: "100vh"}}>
           <TileLayer
             attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
             url="https://api.maptiler.com/maps/voyager/256/{z}/{x}/{y}.png?key=tbxxnHOYRKXeGzScTE2D" />
