@@ -1,0 +1,42 @@
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+.description-name{
+  color: black;
+  font-weight: bold;
+  text-decoration: none;
+}
+.description-date{
+  color: black;
+  font-weight: bold;
+}
+.loop{
+  position: absolute;
+  z-index: 10000000000;
+  top: 12%;
+  display: flex;
+  left: 0.5%;
+}
+.buttonSearch{
+  background-image: url('../public/search.png');
+  background-size: 20px;
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  border: none;
+}
+.inputSearch{
+  height: 20px;
+  margin-left: 5%;
+}
