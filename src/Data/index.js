@@ -34,6 +34,19 @@ export class Data extends React.Component {
                     records.push({"key":keyName,"data":data})
                 }
             })
+
+            records.forEach((element) => {
+                if(element.data.bc_ad=="BC"){
+                    element.data.complateYear = element.data.year * (-1)
+                }else{
+                    element.data.complateYear = element.data.year 
+                }
+            })
+
+            records.sort(function(a,b){
+                return parseFloat(a.data.complateYear) - parseFloat(b.data.complateYear);
+            })
+
             this.setState({
                 data: records
             });
