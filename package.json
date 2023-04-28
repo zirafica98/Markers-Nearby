@@ -9,6 +9,8 @@
     "@testing-library/user-event": "^13.5.0",
     "bootstrap": "^5.2.0",
     "firebase": "^9.9.2",
+    "jquery": "^3.6.4",
+    "json-loader": "^0.5.7",
     "leaflet": "^1.8.0",
     "leaflet-defaulticon-compatibility": "^0.1.1",
     "leaflet-geosearch": "^3.6.1",
@@ -22,8 +24,8 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
+    "start": "react-scripts --max_old_space_size=8192 start",
+    "build": "react-scripts --max_old_space_size=8192 build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },

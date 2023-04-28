@@ -11,26 +11,23 @@ export class Data extends React.Component {
           error: null,
           isLoaded: false,
           items: this.props.items,
-          data:null,
+          data:[],
           radius:this.props.radius,
           counter:0,
-          setArray:null
+          setArray:null,
+          zoom:16
 
         }
       }
-      useEffect= () => {
-        for (let i = 1; i <= 3; i++) {
-          setTimeout(() => this.state.setArray((prevState) => [...prevState, i]), 3000 * i);
-        }
-      };
-      componentDidMount(){
+
+      getData(radius){
         const dbRef = ref(db,'/2/data');
         onValue(dbRef,(snapshot)=>{
             var records=[]
             snapshot.forEach(childSnapshot=>{
                 let keyName=childSnapshot.key;
                 let data=childSnapshot.val();
-                if(this.getDistance([data.long_marker,data.lat],[this.state.items[0].lon,this.state.items[0].lat])<=this.state.radius && records.length<5){
+                if(this.getDistance([data.long_marker,data.lat],[this.state.items[0].lon,this.state.items[0].lat])<=radius && records.length<5){
                     records.push({"key":keyName,"data":data})
                 }
             })
@@ -47,10 +44,41 @@ export class Data extends React.Component {
                 return parseFloat(a.data.complateYear) - parseFloat(b.data.complateYear);
             })
 
-            this.setState({
-                data: records
-            });
+            if(records.length < 5){
+                this.getData(radius + 5000)
+                if(this.state.zoom > 0){
+                    this.setState({
+                    
+                        //zoom:this.state.zoom - 5
+                        
+                    })
+                }else{
+                    this.setState({
+                    
+                        zoom:0
+                    })
+                }
+                
+            }else{
+                this.setState({
+                    data: records,
+                    radius:radius
+                    
+                });
+            }
+
+        
+            
         })
+      }
+
+      useEffect= () => {
+        for (let i = 1; i <= 3; i++) {
+          setTimeout(() => this.state.setArray((prevState) => [...prevState, i]), 3000 * i);
+        }
+      };
+      componentDidMount(){
+        this.getData(this.state.radius);
     }
 
 
@@ -83,7 +111,7 @@ export class Data extends React.Component {
             return 'Loading...';
         }else{
             return (
-                <CustomMarker things={this.state.data}></CustomMarker>
+                <CustomMarker things={this.state.data} zoom={this.state.zoom} radius={this.state.radius}></CustomMarker>
               );
         }
     }

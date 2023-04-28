@@ -55,13 +55,13 @@ code {
   top: 1%;
   text-align: center;
 }
-.marker-inf > span {
+.marker-inf .markerName {
   text-align: center;
   width: 100%;
   font-weight: bold;
   font-size: 14px;
 }
-.marker-inf > text {
+.marker-inf .date {
   width: 100%;
   text-align: center;
   display: block;

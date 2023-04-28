@@ -10,8 +10,8 @@ export function icon(name){
 }
 
 export const ICONRED = L.icon({
-    iconUrl: "icon-red.png",
-    iconSize: [40, 40],
+    iconUrl: "ankhFavicon.png",
+    iconSize: [30, 30],
 })
 
 export var theRadius= 1000

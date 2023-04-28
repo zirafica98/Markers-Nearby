@@ -54,13 +54,13 @@ body {
       right: 1%;
       top: 1%;
       text-align: center;
-      >span{
+      .markerName{
         text-align: center;
         width: 100%;
         font-weight: bold;
         font-size: 14px;
       }
-      >text{
+      .date{
         width: 100%;
         text-align: center;
         display: block;

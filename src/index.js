@@ -10,11 +10,10 @@ const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString);
 const cityName=urlParams.get('location')
 root.render(
-  <React.StrictMode>
-    <MyMap cityName={cityName}></MyMap>
+  <>
+  <MyMap cityName={cityName}></MyMap>
     <SearchForm></SearchForm>
-  </React.StrictMode>
-  
+  </>
 );
 
 

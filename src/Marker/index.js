@@ -1,16 +1,26 @@
-import React , { useEffect, useState } from 'react';
+import React , { useEffect, useState} from 'react';
+import {useMapEvents,useMap} from "react-leaflet"
 import {Marker,Popup} from 'react-leaflet'
 import { icon } from '../Variable';
 import MarkerInf from '../MarkerInf';
-
-
-
+import AddPolygon from '../GeoJson/addPolygon';
+import $ from "jquery"
 
 export default function CustomMarker(props){
   const [renderedThings, setRenderThings] = useState();
   const [itemsRendered , setItemsRendered] = useState(0);
   const [show, setShow] = useState(false);
+  
 
+  const RecenterAutomatically = ({lat,lng}) => {
+    const map = useMap();
+     useEffect(() => {
+      var zoom = Math.floor(Math.log2((Math.cos(lat * Math.PI/180) * 2 * Math.PI * 6371008 * 4)/props.radius))
+       map.setZoom(zoom);
+       map.setView([lat, lng]);
+     }, [lat, lng]);
+     return null;
+   }
 
   useEffect(() => {
 
@@ -18,12 +28,15 @@ export default function CustomMarker(props){
       setTimeout(() => {
         setRenderThings(props.things[i]);
         setShow(true);
-      }, 10000 * i);
+        
+      }, 5000 * i);
     }
-
-  }, []);
+    
+    $(".leaflet-marker-pane :first-child").hide();
+  }, [props]);
 
   if(show){
+    
     return(
       <>
       <Marker key={renderedThings.key} icon={icon(renderedThings.data.img_name)} position={[renderedThings.data.lat,renderedThings.data.long_marker]}>
@@ -34,6 +47,8 @@ export default function CustomMarker(props){
         </Popup>
       </Marker>
       <MarkerInf markerName={renderedThings.data.marker_name} desc= {renderedThings.data.text_wrap} wiki={renderedThings.data.wiki} date ={dateFormater(renderedThings.data.date)} bc_ad = {renderedThings.data.bc_ad}></MarkerInf>
+      <AddPolygon yearMarker = {renderedThings.data.complateYear}></AddPolygon>
+      <RecenterAutomatically  lat={renderedThings.data.lat} lng={renderedThings.data.long_marker}></RecenterAutomatically>
       </>
 
   )
