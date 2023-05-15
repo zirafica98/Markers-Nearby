@@ -1,62 +1,58 @@
-import React , { useEffect, useState} from 'react';
-import {useMapEvents,useMap} from "react-leaflet"
+import React, { Component} from 'react';
 import {Marker,Popup} from 'react-leaflet'
-import { icon } from '../Variable';
-import MarkerInf from '../MarkerInf';
+import {icon } from '../Variable';
+import L from "leaflet";
 import AddPolygon from '../GeoJson/addPolygon';
 import $ from "jquery"
+import Bounds from './bounds';
 
-export default function CustomMarker(props){
-  const [renderedThings, setRenderThings] = useState();
-  const [itemsRendered , setItemsRendered] = useState(0);
-  const [show, setShow] = useState(false);
-  
-
-  const RecenterAutomatically = ({lat,lng}) => {
-    const map = useMap();
-     useEffect(() => {
-      var zoom = Math.floor(Math.log2((Math.cos(lat * Math.PI/180) * 2 * Math.PI * 6371008 * 4)/props.radius))
-       map.setZoom(zoom);
-       map.setView([lat, lng]);
-     }, [lat, lng]);
-     return null;
-   }
-
-  useEffect(() => {
-
-    for (let i in props.things) {
-      setTimeout(() => {
-        setRenderThings(props.things[i]);
-        setShow(true);
-        
-      }, 5000 * i);
+class CustomMarker extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      renderedThings:null,
+      itemsRendered:null,
+      show:false,
+      cords:[],
+      bounds:false,
+      group:L.featureGroup(),
+      video:false,
+      linkYoutube:null,
+      pause:false,
+      data:props.things,
+      arrayCord:[],
     }
-    
-    $(".leaflet-marker-pane :first-child").hide();
-  }, [props]);
-
-  if(show){
-    
-    return(
-      <>
-      <Marker key={renderedThings.key} icon={icon(renderedThings.data.img_name)} position={[renderedThings.data.lat,renderedThings.data.long_marker]}>
-        <Popup>
-          <a className='description-name' href={renderedThings.data.wiki}>{renderedThings.data.marker_name}</a><br></br>
-          {renderedThings.data.text_wrap}<br></br>
-          <span className='description-date'>Date:</span> {dateFormater(renderedThings.data.date)} {renderedThings.data.bc_ad}
-        </Popup>
-      </Marker>
-      <MarkerInf markerName={renderedThings.data.marker_name} desc= {renderedThings.data.text_wrap} wiki={renderedThings.data.wiki} date ={dateFormater(renderedThings.data.date)} bc_ad = {renderedThings.data.bc_ad}></MarkerInf>
-      <AddPolygon yearMarker = {renderedThings.data.complateYear}></AddPolygon>
-      <RecenterAutomatically  lat={renderedThings.data.lat} lng={renderedThings.data.long_marker}></RecenterAutomatically>
-      </>
-
-  )
   }
-  
-}
+    handleButtonClick = () =>{
+      this.setState({
+        video: !this.state.video,
+        pause: !this.state.pause
+      });
+    };
 
-function dateFormater(date){
+  FetchData = async (data) => {
+
+    this.setState({
+      arrayCord:data.arrayCord
+    })
+    for (var index = 0; index < data.things.length; index++) {
+      while(this.state.pause){
+        await new Promise((res) => setTimeout(res, 1000));
+      }
+        var element = data.things[index];
+        this.setState({
+          renderedThings:element,
+          linkYoutube:element.data.youtubeUrl,
+          show:true
+        })
+        $(".leaflet-marker-pane :first-child").hide();
+        await new Promise((res) => setTimeout(res, 5000));
+    }
+   
+  };
+
+
+dateFormater(date){
   const words = date.split('/');
   var mon=words[0]
   var day=words[1]
@@ -89,3 +85,44 @@ function dateFormater(date){
   }
   return mon+" "+day + " " +year
 }
+
+  componentWillReceiveProps(props) {
+    if(props.things.length == 5){
+      this.FetchData(props);
+    }
+  }
+
+  render() {
+    if(this.state.show){
+      return (
+        <div>
+         <><Marker key={this.state.renderedThings.key} icon={icon(this.state.renderedThings.data.img_name)} position={[this.state.renderedThings.data.lat,this.state.renderedThings.data.long_marker]}>
+         <Popup>
+          <a className='description-name' href={this.state.renderedThings.data.wiki}>{this.state.renderedThings.data.marker_name}</a><br></br>
+           {this.state.renderedThings.data.text_wrap}<br></br>
+           <span className='description-date'>Date:</span> {this.dateFormater(this.state.renderedThings.data.date)} {this.state.renderedThings.data.bc_ad}
+         </Popup>
+       </Marker>
+       <AddPolygon yearMarker = {this.state.renderedThings.data.complateYear}></AddPolygon>
+       <div className='marker-inf'>
+             <span className='markerName'>{this.state.renderedThings.data.marker_name}</span>
+             <span className='date'>{this.dateFormater(this.state.renderedThings.data.date)} {this.state.renderedThings.data.bc_ad}</span>
+             <p>{this.state.renderedThings.data.text_wrap}</p>
+             <a href={this.state.renderedThings.data.wiki} target="_blank">More</a><br></br>
+             {this.state.linkYoutube != '' && <button onClick={this.handleButtonClick}>Play video</button>}
+         </div>
+        {this.state.video && <div id="youtubeVideo"><iframe src={this.state.linkYoutube}></iframe><div className='close'><button onClick={this.handleButtonClick}>X</button></div></div>}
+       {this.state.arrayCord.length == 6 && <Bounds coords={this.state.arrayCord} bounds = {this.state.bounds} />}
+       </>
+        </div>
+      );
+    }else{
+      return (
+        <div className='loading'>
+          <img src='loading.gif'></img>
+        </div>
+      )
+    }
+  }
+}
+export default CustomMarker;

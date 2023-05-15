@@ -42,12 +42,12 @@ export class MyMap extends React.Component {
   render() {
       if (this.state.items.length>0){
         return (
-          <MapContainer center={[this.state.items[0].lat,this.state.items[0].lon]} zoom={14} style={{height: "100vh"}}>
+          <MapContainer center={[this.state.items[0].lat,this.state.items[0].lon]} zoom={13} style={{height: "100vh"}}>
           <TileLayer
             attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
             url="https://api.maptiler.com/maps/voyager/256/{z}/{x}/{y}.png?key=tbxxnHOYRKXeGzScTE2D" />
-            {this.state.showCenter && <Marker icon={ICONRED} id={"centerMarker"} position={[this.state.items[0].lat,this.state.items[0].lon]}></Marker>}
-          <Data items={this.state.items} radius={theRadius} ></Data>
+            <Marker icon={ICONRED} id={"centerMarker"} position={[this.state.items[0].lat,this.state.items[0].lon]}></Marker>
+            <Data items={this.state.items} radius={theRadius} center={[this.state.items[0].lat,this.state.items[0].lon]}></Data>
           </MapContainer>
         )
       }else{

@@ -1,7 +1,6 @@
 import React from 'react';
 import StartFirebase from '../firebaseConfig/firebase';
 import CustomMarker from '../Marker';
-import MarkerInf from '../MarkerInf';
 import {ref,onValue} from 'firebase/database'
 const db = StartFirebase();
 export class Data extends React.Component {
@@ -15,7 +14,9 @@ export class Data extends React.Component {
           radius:this.props.radius,
           counter:0,
           setArray:null,
-          zoom:16
+          zoom:16,
+          center:this.props.center,
+          arrayCord:[],
 
         }
       }
@@ -24,6 +25,8 @@ export class Data extends React.Component {
         const dbRef = ref(db,'/2/data');
         onValue(dbRef,(snapshot)=>{
             var records=[]
+            var coordsArray=[];
+            var cord;
             snapshot.forEach(childSnapshot=>{
                 let keyName=childSnapshot.key;
                 let data=childSnapshot.val();
@@ -38,6 +41,14 @@ export class Data extends React.Component {
                 }else{
                     element.data.complateYear = element.data.year 
                 }
+                cord = [element.data.lat,element.data.long_marker];
+                coordsArray.push(cord);
+
+            })
+            coordsArray.push(this.state.center);
+
+            this.setState({
+                arrayCord:coordsArray
             })
 
             records.sort(function(a,b){
@@ -46,29 +57,12 @@ export class Data extends React.Component {
 
             if(records.length < 5){
                 this.getData(radius + 5000)
-                if(this.state.zoom > 0){
-                    this.setState({
-                    
-                        //zoom:this.state.zoom - 5
-                        
-                    })
-                }else{
-                    this.setState({
-                    
-                        zoom:0
-                    })
-                }
-                
             }else{
                 this.setState({
                     data: records,
                     radius:radius
-                    
                 });
             }
-
-        
-            
         })
       }
 
@@ -111,7 +105,7 @@ export class Data extends React.Component {
             return 'Loading...';
         }else{
             return (
-                <CustomMarker things={this.state.data} zoom={this.state.zoom} radius={this.state.radius}></CustomMarker>
+                <CustomMarker things={this.state.data} zoom={this.state.zoom} radius={this.state.radius} arrayCord = {this.state.arrayCord}></CustomMarker>
               );
         }
     }
