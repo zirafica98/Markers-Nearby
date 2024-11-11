@@ -2,6 +2,7 @@ import React from 'react';
 import StartFirebase from '../firebaseConfig/firebase';
 import CustomMarker from '../Marker';
 import {ref,onValue} from 'firebase/database'
+import MarkerRadius from '../RadiusChange';
 const db = StartFirebase();
 export class Data extends React.Component {
       constructor(props) {
@@ -30,7 +31,7 @@ export class Data extends React.Component {
             snapshot.forEach(childSnapshot=>{
                 let keyName=childSnapshot.key;
                 let data=childSnapshot.val();
-                if(this.getDistance([data.long_marker,data.lat],[this.state.items[0].lon,this.state.items[0].lat])<=radius && records.length<5){
+                if(this.getDistance([data.long_marker,data.lat],[this.state.items[0].lon,this.state.items[0].lat])<=radius && records.length<10){
                     records.push({"key":keyName,"data":data})
                 }
             })
@@ -55,7 +56,7 @@ export class Data extends React.Component {
                 return parseFloat(a.data.complateYear) - parseFloat(b.data.complateYear);
             })
 
-            if(records.length < 5){
+            if(records.length < 10){
                 this.getData(radius + 5000)
             }else{
                 this.setState({
@@ -101,11 +102,14 @@ export class Data extends React.Component {
 
     render() {
 
-        if (this.state.data == null) {
+        if (this.state.data.length <9 ) {
             return 'Loading...';
         }else{
             return (
-                <CustomMarker things={this.state.data} zoom={this.state.zoom} radius={this.state.radius} arrayCord = {this.state.arrayCord}></CustomMarker>
+                <>
+                   <CustomMarker things={this.state.data} zoom={this.state.zoom} radius={this.state.radius} arrayCord = {this.state.arrayCord}></CustomMarker>
+                    <MarkerRadius center={[this.state.items[0].lat,this.state.items[0].lon]} radius= {this.state.radius}></MarkerRadius>
+                </>
               );
         }
     }

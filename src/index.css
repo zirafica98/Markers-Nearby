@@ -141,7 +141,8 @@ code {
 }
 @media screen and (max-width: 400px) {
   .search {
-    left: 2.3%;
+    left: 2.2%;
+    top: 15%;
   }
 }
 

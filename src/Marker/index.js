@@ -20,7 +20,9 @@ class CustomMarker extends Component {
       linkYoutube:null,
       pause:false,
       data:props.things,
-      arrayCord:[],
+      arrayCord:props.arrayCord,
+      radius:props.radius,
+      func1:this.FetchData.bind(this)
     }
   }
     handleButtonClick = () =>{
@@ -32,14 +34,14 @@ class CustomMarker extends Component {
 
   FetchData = async (data) => {
 
-    this.setState({
-      arrayCord:data.arrayCord
-    })
-    for (var index = 0; index < data.things.length; index++) {
+    // this.setState({
+    //   arrayCord:data.arrayCord
+    // })
+    for (var index = 0; index < data.length; index++) {
       while(this.state.pause){
         await new Promise((res) => setTimeout(res, 1000));
       }
-        var element = data.things[index];
+        var element = data[index];
         this.setState({
           renderedThings:element,
           linkYoutube:element.data.youtubeUrl,
@@ -86,10 +88,8 @@ dateFormater(date){
   return mon+" "+day + " " +year
 }
 
-  componentWillReceiveProps(props) {
-    if(props.things.length == 5){
-      this.FetchData(props);
-    }
+componentDidMount() {
+      this.FetchData(this.state.data);
   }
 
   render() {
@@ -109,10 +109,12 @@ dateFormater(date){
              <span className='date'>{this.dateFormater(this.state.renderedThings.data.date)} {this.state.renderedThings.data.bc_ad}</span>
              <p>{this.state.renderedThings.data.text_wrap}</p>
              <a href={this.state.renderedThings.data.wiki} target="_blank">More</a><br></br>
+             <a href={"http://maps.google.com/maps?q=loc:"+this.state.renderedThings.data.lat+","+this.state.renderedThings.data.long_marker} target="_blank">Get direction</a><br></br>
+             
              {this.state.linkYoutube != '' && <button onClick={this.handleButtonClick}>Play video</button>}
          </div>
         {this.state.video && <div id="youtubeVideo"><iframe src={this.state.linkYoutube}></iframe><div className='close'><button onClick={this.handleButtonClick}>X</button></div></div>}
-       {this.state.arrayCord.length == 6 && <Bounds coords={this.state.arrayCord} bounds = {this.state.bounds} />}
+       {this.state.arrayCord.length == 11 &&  <Bounds coords={this.state.arrayCord} bounds = {this.state.bounds} radius={this.state.radius}/>}
        </>
         </div>
       );

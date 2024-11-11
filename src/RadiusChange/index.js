@@ -1,24 +1,14 @@
-import { Data } from '../Data';
+import {Circle} from "react-leaflet";
 
-function ChangeRadius(radius,cityName){
-    var array=[];
-    fetch("https://nominatim.openstreetmap.org/search?format=json&limit=3&q=" + cityName)
-    .then(res => res.json())
-    .then(
-      (result) => {
+import React from 'react';
 
-        //array=result;
-        return(
-            <Data items={result} radius={radius}></Data>
-        )
-    }
-    )
-    // if(array.length>0){
-    //     return(
-    //         <Data items={array} radius={radius}></Data>
-    //     )
-    // }
-    
+
+function MarkerRadius(props) {
+    return (
+        <div>
+            <Circle center={[props.center[0],props.center[1]]} radius={props.radius} />
+        </div>
+    );
 }
 
-export default ChangeRadius;
+export default MarkerRadius;

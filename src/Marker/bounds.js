@@ -14,15 +14,23 @@ function Bounds(props){
         props.coords.forEach((marker) => {
           group.addLayer(L.marker(marker))
         });
-    
-        map.fitBounds(group.getBounds());
+        const lat = map.getCenter().lat
+        var zoom = Math.floor(Math.log2((Math.cos(lat * Math.PI/180) * 2 * Math.PI * 6371008 * 4)/props.radius))
+        if($(window).width() < 500){
+          map.setZoom(zoom-2);
+        }else{
+          map.setZoom(zoom-1);
+        }
+        
       }
       $('.marker-inf').on("mousedown", L.DomEvent.stopPropagation);
       $('.marker-inf').on("wheel", L.DomEvent.stopPropagation);
       $('.marker-inf').on("swiped", L.DomEvent.stopPropagation);
       $('.marker-inf').on("touchstart", L.DomEvent.stopPropagation);
       $('.marker-inf').on("touchmove", L.DomEvent.stopPropagation);
-    });
+    }, []);
+
+    
   
     return null;
   }

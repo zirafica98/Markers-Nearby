@@ -4,7 +4,7 @@ import * as L from 'leaflet';
 export function icon(name){
     const ICON = L.icon({
         iconUrl: 'https://mappinghistorybucket.s3.us-east-2.amazonaws.com/MappingHistoryMarker/'+name,
-        iconSize: [40, 40],
+        iconSize: [60, 60],
     })
     return ICON;
 }
